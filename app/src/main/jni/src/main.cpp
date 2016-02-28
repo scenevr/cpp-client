@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 
     SDL_Log("Width = %d. Height = %d\n", width, height);
 
-    sdlWindow = SDL_CreateWindow(nullptr, 0, 0, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
+    sdlWindow = SDL_CreateWindow(nullptr, 0, 0, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_INIT_JOYSTICK);
 
     if (sdlWindow == 0)
     {
@@ -121,12 +121,11 @@ int main(int argc, char** argv)
     pointLight->lookAt(three::Vector3(0, 0, 0));
     scene->add( pointLight );
 
-    auto ambientLight = three::AmbientLight::create(0x333333);
-    scene->add(ambientLight);
-
     // Materials
     auto material = three::MeshLambertMaterial::create(
-      three::Material::Parameters().add( "color", three::Color( 0xff00aa ) )
+      three::Material::Parameters()
+        .add( "color", three::Color( 0xff00aa ) )
+        .add( "emissive", three::Color( 0x330011 ) )
     );
 
     // Geometries
@@ -137,19 +136,27 @@ int main(int argc, char** argv)
     scene->add( box );
 
     bool done = false;
+    bool movingForward = false;
+
+    window.addEventListener(SDL_JOYBUTTONDOWN, [&]( const SDL_Event& event ) {
+      if (event.jbutton.button == SDL_CONTROLLER_BUTTON_A) {
+        movingForward = true;
+      }
+    });
+
+    window.addEventListener(SDL_JOYBUTTONUP, [&]( const SDL_Event& event ) {
+      if (event.jbutton.button == SDL_CONTROLLER_BUTTON_A) {
+        movingForward = false;
+      }
+    });
 
     window.animate( [&]( float dt ) -> bool {
-      // std::lock_guard<std::mutex> guard(scene_mutex);
-
-      //camera->position().x += (-10.f * mouseX - camera->position().x ) * 3 * dt;
-      //camera->position().y = 2.0f;
       camera->position().set(0, 5, -10);
       camera->lookAt( scene->position() );
 
-      box->rotation().y += 0.1;
-      box->rotation().z += 0.1;
+      box->rotation().y += movingForward ? 0.1 : 0.025;
+      box->rotation().z += movingForward ? 0.1 : 0.025;
 
-      // SDL_Log("Calling #render");
       renderer->render( *scene, *camera );
 
       return true;

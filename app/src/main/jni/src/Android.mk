@@ -8,29 +8,30 @@ SDL_PATH := ../SDL2
 GLM_PATH := ../glm
 THREE_PATH := ../THREE
 EASYWS_PATH := ../easywsclient
+PUGI_PATH := ../pugixml
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
     $(LOCAL_PATH)/$(THREE_PATH)/ \
     $(LOCAL_PATH)/$(EASYWS_PATH)/ \
-    $(LOCAL_PATH)/$(GLM_PATH)/ \
-    $(LOCAL_PATH)/$(GLM_PATH)/gtc \
-    $(LOCAL_PATH)/$(GLM_PATH)/gtx \
-    $(LOCAL_PATH)/$(GLM_PATH)/detail \
-    $(LOCAL_PATH)/$(GLM_PATH)/glm.hpp
+    $(LOCAL_PATH)/$(PUGI_PATH)/
 
 # Add your application source files here...
 LOCAL_SRC_FILES := \
 	$(SDL_PATH)/src/main/android/SDL_android_main.c \
 	$(EASYWS_PATH)/easywsclient.cpp \
+	$(PUGI_PATH)/pugixml.cpp \
 	main.cpp \
+	client.cpp \
+	connector.cpp \
+	elements/element.cpp \
+	elements/box.cpp \
 	vendor/sdl.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 THREE
 
 LOCAL_LDLIBS := -lGLESv1_CM -lEGL -lGLESv3 -llog
 
-# want to get rid of -fpermissive
-LOCAL_CPPFLAGS := -std=c++11 -frtti -fpermissive
+LOCAL_CPPFLAGS := -std=c++11 -frtti
 
 LOCAL_STL=gnustl_static
 

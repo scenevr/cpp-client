@@ -41,7 +41,8 @@ public:
 private:
   void swapBuffers();
   bool processEvents();
-
+  void openJoysticks();
+  
   SDL_Window* window;
   SDL_GLContext context;
   bool renderStats;

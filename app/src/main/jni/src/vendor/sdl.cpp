@@ -89,11 +89,40 @@ void GLWindow::swapBuffers() {
   SDL_GL_SwapWindow( window );
 }
 
+void GLWindow::openJoysticks() {
+  for( int i=0; i < SDL_NumJoysticks(); i++ ) {
+    SDL_Joystick *joystick;
+
+    SDL_JoystickEventState(SDL_ENABLE);
+    joystick = SDL_JoystickOpen(i);
+    SDL_Log("    %s\n", SDL_JoystickName(joystick));
+  }
+}
+
 bool GLWindow::processEvents() {
   SDL_Event event;
+
   while ( SDL_PollEvent( &event ) ) {
+    // SDL_Log("Event: %d", event.type);
+
     if ( event.type == SDL_QUIT )
       return false;
+
+    if (event.type == SDL_JOYDEVICEADDED) {
+      SDL_Log("Joystick added!");
+      openJoysticks();
+    }
+
+    // if (event.type == SDL_JOYBUTTONDOWN) {
+    //   SDL_Log("Button down: %d", event.jbutton.button);
+
+    //   if (event.jbutton.button == SDL_CONTROLLER_BUTTON_A) {
+    //     SDL_Log("A Button!");
+    //   }
+    //   if (event.jbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) {
+    //     SDL_Log("Right shoulder!");
+    //   }
+    // }
 
     if ( event.type == SDL_KEYDOWN ) {
       switch ( event.key.keysym.sym ) {
