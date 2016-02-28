@@ -4,6 +4,10 @@ namespace scenevr {
 
 using namespace three;
 
+Element::Element(pugi::xml_node n) : node(n) {
+  parseStyles();
+}
+
 void Element::parseStyles() {
   styles = new Stylemap(node.attribute("style").value());
 }

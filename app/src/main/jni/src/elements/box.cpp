@@ -8,10 +8,7 @@ namespace scenevr {
 
 using namespace three;
 
-Box::Box(const pugi::xml_node n){
-  node = n;
-
-  parseStyles();
+Box::Box(const pugi::xml_node n) : Element(n){
 
   auto material = three::MeshLambertMaterial::create(
     three::Material::Parameters()

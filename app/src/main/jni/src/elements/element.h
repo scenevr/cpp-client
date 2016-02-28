@@ -12,6 +12,8 @@ namespace scenevr {
 
 class Element {
   public:
+    Element (pugi::xml_node node);
+    
     typedef std::shared_ptr<Element> Ptr;
     three::Object3D::Ptr object;
 
