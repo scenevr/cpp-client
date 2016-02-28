@@ -28,7 +28,7 @@ class GLWindow : public three::NonCopyable, public SdlEventDispatcher {
 public:
   
 
-  GLWindow( const three::RendererParameters& );
+  GLWindow( const three::RendererParameters&, SDL_Window* w, SDL_GLContext c );
   ~GLWindow();
 
   three::GLInterface createGLInterface();

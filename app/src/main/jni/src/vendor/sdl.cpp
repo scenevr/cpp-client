@@ -33,70 +33,8 @@ struct SDLGLInterface : public GLInterface {
 
 } // namepace
 
-GLWindow::GLWindow( const RendererParameters& parameters )
-    : window( nullptr ),
-      context( nullptr ),
-      renderStats( true ) {
-          
-  SDL_Log("SDL_Init");
-
-  if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
-    SDL_Log("Unable to initialize SDL: %s", SDL_GetError());;
-    // console().error() << "Unable to initialize SDL: " << SDL_GetError();
-    return;
-  }
-
-  SDL_Log("SDL_Inited");
-
-  // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-  // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
-  // // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-  // SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY );
-  // SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
-  
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-
-  // if ( parameters.vsync )
-  //   SDL_GL_SetSwapInterval( 1 );
-
-  /*
-  if ( parameters.antialias ) {
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4 );
-  }
-  */
-
-  SDL_DisplayMode mode;
-  SDL_GetDisplayMode(0, 0, &mode);
-  int width = mode.w;
-  int height = mode.h;
-
-  SDL_Log("Width = %d. Height = %d\n", width, height);
-
-  window = SDL_CreateWindow(nullptr, 0, 0, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
-
-  if ( !window ) {
-    SDL_Log("Error creating window: %s", SDL_GetError());
-    return;
-  }
-
-  context = SDL_GL_CreateContext( window );
-  if ( !context ) {
-    SDL_Log("Error creating GL context: %s", SDL_GetError());
-    return;
-  }
-
-  SDL_Log("SDL initialized");
+GLWindow::GLWindow( const RendererParameters& parameters, SDL_Window* w, SDL_GLContext c) : window(w), context(c) {
+  SDL_Log("GLWindow created");
 }
 
 GLWindow::~GLWindow() {
@@ -124,6 +62,7 @@ void GLWindow::animate( Update update ) {
   auto lastUpdateTime = clock.getElapsedTime();
 
   while ( true ) {
+    // SDL_Log("In loop");
 
     const auto currentTime = clock.getElapsedTime();
     const auto deltaTime = currentTime - lastUpdateTime;
@@ -137,6 +76,7 @@ void GLWindow::animate( Update update ) {
 
     // stats.update( deltaTime, renderStats );
 
+    // SDL_Log("Calling #swapBuffers");
     swapBuffers();
   }
 }
