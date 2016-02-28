@@ -3,4 +3,5 @@ app/src/main/obj/
 .gradle
 app/build/outputs/
 .DS_Store
+libs
 
