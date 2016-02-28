@@ -1,6 +1,9 @@
 #include "client.h"
 
 #include <three/lights/point_light.h>
+#include <three/extras/geometries/plane_geometry.h>
+#include <three/objects/mesh.h>
+#include <three/materials/mesh_lambert_material.h>
 #include <three/core/object3d.h>
 #include <cassert>
 
@@ -17,6 +20,7 @@ Client::Client(GLRenderer::Ptr r, GLWindow* w) : renderer(r), window(w) {
 void Client::connect(string url) {
   auto object = Object3D::create();
   connector = Connector::create(url, object);
+  scene->add(object);
 }
 
 void Client::start (){
@@ -29,7 +33,7 @@ void Client::start (){
 }
 
 bool Client::tick(float dt) {
-  camera->position().set(0, 5, -10);
+  camera->position().set(0, 5, -20);
   camera->lookAt( scene->position() );
 
   renderer->render( *scene, *camera );
@@ -50,6 +54,18 @@ void Client::createScene(){
   pointLight->position() = three::Vector3( 0.75, 1, 0.5 ).multiplyScalar(50);
   pointLight->lookAt(three::Vector3(0, 0, 0));
   scene->add( pointLight );
+
+  // Ground plane
+  auto material = MeshLambertMaterial::create(
+    Material::Parameters().add( "color", Color( 0xffffff ) )
+  );
+
+  auto geometry = PlaneGeometry::create( 64, 64 );
+
+  auto plane = Mesh::create( geometry, material );
+  plane->rotation().x = -M_PI / 2;
+  scene->add( plane );
+
 }
 
 }

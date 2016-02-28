@@ -22,6 +22,7 @@ Box::Box(const pugi::xml_node n){
 
   // Set position
   object->position().copy(parseVector(node.attribute("position").value()));
+  object->scale().copy(parseVector(node.attribute("scale").value()));
 }
 
 }

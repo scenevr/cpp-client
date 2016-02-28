@@ -1,6 +1,8 @@
 #include "connector.h"
+#include "elements/box.h"
 
 #include <thread>
+
 
 namespace scenevr {
 
@@ -20,7 +22,30 @@ void Connector::handleMessage(const std::string & message) {
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_string(message.c_str());
 
-  SDL_Log(">>> %s\n", message.c_str());
+  if (result) {
+    std::lock_guard<std::mutex> guard(sceneMutex);
+
+    for (auto node = doc.child("packet").first_child(); node; node = node.next_sibling()) {
+      string uuid = node.attribute("uuid").value();
+
+      if (elementMap.find(uuid) != elementMap.end()) {
+        // sweet...
+        continue;
+      }
+
+      Element::Ptr element;
+
+      if (strcmp(node.name(), "box") == 0) {
+        element = Box::create(node);
+      } else {
+        SDL_Log("Unhandled element <%s/>", node.name());
+        continue;
+      }
+
+      elementMap[uuid] = element;
+      scene->add(element->object);
+    }
+  }
 }
 
 void Connector::pollWebsocket () {

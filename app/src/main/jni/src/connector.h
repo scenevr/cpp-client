@@ -9,6 +9,8 @@
 #include <three/core/object3d.h>
 #include <pugixml.hpp>
 
+#include "elements/element.h"
+
 namespace scenevr {
 
 class Connector {
@@ -27,6 +29,7 @@ class Connector {
     void pollWebsocket();
     void handleMessage(const std::string & message);
 
+    std::map<std::string, std::shared_ptr<Element>> elementMap;
     std::string url;
     std::mutex sceneMutex;
     std::thread *websocketThread;
