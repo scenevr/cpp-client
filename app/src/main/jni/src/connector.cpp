@@ -37,6 +37,8 @@ void Connector::handleMessage(const std::string & message) {
 
       if (strcmp(node.name(), "box") == 0) {
         element = Box::create(node);
+      } else if (strcmp(node.name(), "billboard") == 0) {
+        element = Box::create(node);
       } else {
         SDL_Log("Unhandled element <%s/>", node.name());
         continue;

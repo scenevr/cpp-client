@@ -33,8 +33,8 @@ void Client::start (){
 }
 
 bool Client::tick(float dt) {
-  camera->position().set(0, 5, -20);
-  camera->lookAt( scene->position() );
+  camera->position().set(5, 1.5, 10);
+  // camera->lookAt( scene->position() );
 
   renderer->render( *scene, *camera );
 
@@ -46,7 +46,7 @@ void Client::createScene(){
   scene = three::Scene::create();
 
   // Camera
-  camera = three::PerspectiveCamera::create(50, (float) renderer->width() / renderer->height(), .1f, 1000.f);
+  camera = three::PerspectiveCamera::create(75, (float) renderer->width() / renderer->height(), .1f, 1000.f);
   scene->add( camera );
 
   // Lights
