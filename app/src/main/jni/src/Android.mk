@@ -4,6 +4,9 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
+NDK_TOOLCHAIN_VERSION := clang
+LOCAL_CLANG :=true
+
 SDL_PATH := ../SDL2
 GLM_PATH := ../glm
 THREE_PATH := ../THREE

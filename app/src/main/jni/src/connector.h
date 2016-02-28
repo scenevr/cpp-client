@@ -1,8 +1,13 @@
 #ifndef CONNECTOR_H
 #define CONNECTOR_H
 
-#include <memory>
 #include <SDL.h>
+#include <memory>
+#include <thread>
+#include <mutex>
+#include <easywsclient.hpp>
+#include <three/core/object3d.h>
+#include <pugixml.hpp>
 
 namespace scenevr {
 
@@ -11,17 +16,22 @@ class Connector {
   public:
     typedef std::shared_ptr<Connector> Ptr;
 
-    static Ptr create(std::string url) { 
-      return std::make_shared<Connector>(url); 
+    static Ptr create(std::string url, three::Object3D::Ptr o) { 
+      return std::make_shared<Connector>(url, o); 
     }
 
-    Connector(const std::string url);
+    Connector(const std::string url, three::Object3D::Ptr sceneObject);
     // ~Connector();
 
-    void connect();
-
   private:
+    void pollWebsocket();
+    void handleMessage(const std::string & message);
+
     std::string url;
+    std::mutex sceneMutex;
+    std::thread *websocketThread;
+    three::Object3D::Ptr scene;
+    easywsclient::WebSocket::pointer websocket = NULL;
 };
 
 }

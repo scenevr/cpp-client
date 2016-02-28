@@ -28,6 +28,8 @@
 #include <three/materials/mesh_lambert_material.h>
 #include "vendor/sdl.h"
 
+#include "client.h"
+
 /* Must use parameters here or else there will be an undefined reference to SDL_main */
 int main(int argc, char** argv)
 {
@@ -104,22 +106,11 @@ int main(int argc, char** argv)
 
     /* Create OpenGL vertex data */
 
-    // Camera
-    auto camera = three::PerspectiveCamera::create(
-      50, (float) renderer->width() / renderer->height(), .1f, 1000.f
-    );
-    camera->position().z = 10;
+    auto client = new scenevr::Client(renderer, &window);
+    client->connect("ws://192.168.1.8:8080/color-change.xml");
+    client->start();
 
-
-    // Scene
-    auto scene = three::Scene::create();
-    scene->add( camera );
-
-    // Lights
-    auto pointLight = three::PointLight::create( 0xFFFFFF );
-    pointLight->position() = three::Vector3( 0.75, 1, 0.5 ).multiplyScalar(50);
-    pointLight->lookAt(three::Vector3(0, 0, 0));
-    scene->add( pointLight );
+    /*
 
     // Materials
     auto material = three::MeshLambertMaterial::create(
@@ -161,6 +152,8 @@ int main(int argc, char** argv)
 
       return true;
     } );
+
+    */
 
     SDL_Log("Exited successfully");
 
