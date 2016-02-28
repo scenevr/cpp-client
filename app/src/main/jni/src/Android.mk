@@ -6,7 +6,7 @@ LOCAL_MODULE := main
 
 SDL_PATH := ../SDL2
 GLM_PATH := ../glm
-THREE_PATH := ../three
+THREE_PATH := ../THREE
 EASYWS_PATH := ../easywsclient
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
@@ -22,13 +22,15 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
 LOCAL_SRC_FILES := \
 	$(SDL_PATH)/src/main/android/SDL_android_main.c \
 	$(EASYWS_PATH)/easywsclient.cpp \
-	main.cpp
+	main.cpp \
+	vendor/sdl.cpp
 
-LOCAL_SHARED_LIBRARIES := SDL2 
+LOCAL_SHARED_LIBRARIES := SDL2 THREE
 
 LOCAL_LDLIBS := -lGLESv1_CM -lEGL -lGLESv3 -llog
 
-LOCAL_CPPFLAGS := -std=c++11 -frtti
+# want to get rid of -fpermissive
+LOCAL_CPPFLAGS := -std=c++11 -frtti -fpermissive
 
 LOCAL_STL=gnustl_static
 

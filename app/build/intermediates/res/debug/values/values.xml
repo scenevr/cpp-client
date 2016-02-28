@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/ben/Projects/scene/build/hello-sdl-android/android-project/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/ben/Projects/scene/cpp-client/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">HelloNDK_SDL2</string>
 </resources>
