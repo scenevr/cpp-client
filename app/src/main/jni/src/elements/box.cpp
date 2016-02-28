@@ -11,10 +11,11 @@ using namespace three;
 Box::Box(const pugi::xml_node n){
   node = n;
 
+  parseStyles();
+
   auto material = three::MeshLambertMaterial::create(
     three::Material::Parameters()
-      .add( "color", three::Color( 0xff00aa ) )
-      .add( "emissive", three::Color( 0x330011 ) )
+      .add( "color", three::Color(styles->getPropertyValue("color")) )
   );
 
   auto geometry = BoxGeometry::create(1, 1, 1);

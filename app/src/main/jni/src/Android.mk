@@ -4,7 +4,6 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-NDK_TOOLCHAIN_VERSION := clang
 LOCAL_CLANG :=true
 
 SDL_PATH := ../SDL2
@@ -27,6 +26,7 @@ LOCAL_SRC_FILES := \
 	client.cpp \
 	connector.cpp \
 	elements/element.cpp \
+	elements/stylemap.cpp \
 	elements/box.cpp \
 	vendor/sdl.cpp
 

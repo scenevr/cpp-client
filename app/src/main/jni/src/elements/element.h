@@ -6,6 +6,8 @@
 #include <memory>
 #include <pugixml.hpp>
 
+#include "stylemap.h"
+
 namespace scenevr {
 
 class Element {
@@ -16,7 +18,9 @@ class Element {
   // protected:
     std::string uuid;
     pugi::xml_node node;
+    Stylemap* styles;
 
+    void parseStyles();
     three::Vector3 parseVector(const std::string str);
 };
 
