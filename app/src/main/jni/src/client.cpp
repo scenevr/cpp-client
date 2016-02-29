@@ -29,14 +29,32 @@ void Client::connect(string url) {
 void Client::start (){
   assert(scene);
 
-  // Animate callback
+  const auto WALKING_SPEED = 4.0;
+
+  window->addEventListener(SDL_JOYBUTTONDOWN, [&]( const SDL_Event& event ) {
+    if (event.jbutton.button == SDL_CONTROLLER_BUTTON_A) {
+      motion.z = -WALKING_SPEED;
+    }
+  });
+
+  window->addEventListener(SDL_FINGERDOWN, [&]( const SDL_Event& event ) {
+    motion.z = -WALKING_SPEED;
+  });
+
+  window->addEventListener(SDL_FINGERUP, [&]( const SDL_Event& event ) {
+    motion.set(0,0,0);
+  });
+
   window->animate( [&]( float dt ) -> bool {
     return tick(dt);
   });
 }
 
 bool Client::tick(float dt) {
-  camera->position().set(5, 1.5, 10);
+  Vector3 v(motion);
+  v.multiplyScalar(dt);
+  camera->position().add(v);
+
   // camera->lookAt( scene->position() );
 
   renderer->render( *scene, *camera );
@@ -50,6 +68,7 @@ void Client::createScene(){
 
   // Camera
   camera = three::PerspectiveCamera::create(75, (float) renderer->width() / renderer->height(), .1f, 1000.f);
+  camera->position().set(5, 1.5, 10);
   scene->add( camera );
 
   // Lights

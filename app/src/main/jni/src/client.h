@@ -31,6 +31,7 @@ class Client : public three::NonCopyable {
 
     Connector::Ptr connector;
 
+    three::Vector3 motion;
     three::GLRenderer::Ptr renderer;
     three::GLWindow* window;
     three::Scene::Ptr scene;
