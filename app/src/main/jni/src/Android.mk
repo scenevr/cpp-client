@@ -7,12 +7,16 @@ LOCAL_MODULE := main
 LOCAL_CLANG :=true
 
 SDL_PATH := ../SDL2
+SDL_TTF_PATH := ../SDL2TTF
 GLM_PATH := ../glm
+LITEHTML_PATH := ../litehtml
 THREE_PATH := ../THREE
 EASYWS_PATH := ../easywsclient
 PUGI_PATH := ../pugixml
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
+		$(LOCAL_PATH)/$(SDL2TTF)/include \
+		$(LOCAL_PATH)/$(LITEHTML)/include \
     $(LOCAL_PATH)/$(THREE_PATH)/ \
     $(LOCAL_PATH)/$(EASYWS_PATH)/ \
     $(LOCAL_PATH)/$(PUGI_PATH)/
@@ -27,7 +31,7 @@ LOCAL_SRC_FILES := \
 	vendor/sdl.cpp \
 	vendor/stats.cpp
 
-LOCAL_SHARED_LIBRARIES := SDL2 THREE
+LOCAL_SHARED_LIBRARIES := SDL2 THREE SDL2_ttf
 
 LOCAL_LDLIBS := -lGLESv1_CM -lEGL -lGLESv3 -llog
 

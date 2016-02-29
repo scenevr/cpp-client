@@ -13,18 +13,60 @@ import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AbsoluteLayout;
 import android.os.*;
 import android.util.Log;
 import android.graphics.*;
 import android.media.*;
 import android.hardware.*;
+import android.widget.FrameLayout;
+import android.app.ActionBar.LayoutParams;
+import android.webkit.WebChromeClient;
 
+class CustomWebView extends WebView {
+    // Fixed values
+    private final int TEXTURE_WIDTH = 512;
+    private final int TEXTURE_HEIGHT = 512;
+
+    // Variables
+    public Surface surface = null;
+
+    public CustomWebView(Context context) {
+        super(context); // Call WebView's constructor
+
+        setWebChromeClient(new WebChromeClient() {
+        });
+        setWebViewClient(new WebViewClient());
+
+        setLayoutParams(new ViewGroup.LayoutParams(TEXTURE_WIDTH, TEXTURE_HEIGHT));
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (surface != null) {
+            // Requires a try/catch for .lockCanvas( null )
+            try {
+                final Canvas surfaceCanvas = surface.lockCanvas(null); // Android canvas from surface
+                super.onDraw(surfaceCanvas); // Call the WebView onDraw targetting the canvas
+                surface.unlockCanvasAndPost(surfaceCanvas); // We're done with the canvas!
+            } catch (Surface.OutOfResourcesException excp) {
+                excp.printStackTrace();
+            }
+        }
+        // super.onDraw( canvas ); // <- Uncomment this if you want to show the original view
+    }
+}
 
 /**
     SDL Activity
 */
+
 public class SDLActivity extends Activity {
+    private native void debugMessage();
+
     private static final String TAG = "SDL";
 
     // Keep track of the paused state
@@ -95,6 +137,56 @@ public class SDLActivity extends Activity {
         mLayout.addView(mSurface);
 
         setContentView(mLayout);
+
+        debugMessage();
+        // initWebview();
+    }
+
+    private CustomWebView m_Webview = null;
+    private SurfaceTexture m_SurfaceTexture = null;
+    private Surface	m_Surface = null;
+
+    public void initWebview() {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                m_Webview = new CustomWebView(SDLActivity.getContext());
+                m_Webview.setVisibility(View.GONE);
+                m_Webview.setFocusable(false);
+                m_Webview.setFocusableInTouchMode(false);
+
+                m_Webview.setWebViewClient(new WebViewClient() {
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+                        return true;
+                    }
+                });
+
+                WebSettings webSettings = m_Webview.getSettings();
+                webSettings.setSupportZoom(false);
+                webSettings.setJavaScriptEnabled(false);
+                webSettings.setSupportMultipleWindows(true);
+                webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+                m_Webview.setVerticalScrollBarEnabled(false);
+                m_Webview.setHorizontalScrollBarEnabled(false);
+
+
+            }
+        });
+    }
+
+    public void renderWebview(final String url){
+        m_SurfaceTexture = new SurfaceTexture(0xFF00);
+        m_SurfaceTexture.setDefaultBufferSize(512, 512);
+        m_Surface = new Surface(m_SurfaceTexture);
+        m_Webview.surface = m_Surface;
+
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                m_Webview.loadUrl(url);
+            }
+        });
     }
 
     // Events

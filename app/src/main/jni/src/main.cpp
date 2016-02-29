@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 #include <thread>
+#include <jni.h>
 
 #include <SDL.h>
 
@@ -29,6 +30,28 @@
 #include "vendor/sdl.h"
 
 #include "client.h"
+
+static int Java_org_libsdl_app_SDLActivity_CreateSurfaceTexture( const int width, const int height ) {
+    int glTexture;
+
+    // glGenTextures( 1, &glTexture );
+
+    // if ( glTexture > 0 ) {
+    //     glBindTexture( GL_TEXTURE_EXTERNAL_OES, glTexture );
+
+    //     // Notice the use of GL_TEXTURE_2D for texture creation
+    //     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
+    //     glTexParameteri( GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+    //     glTexParameteri( GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+        
+    //     glTexParameteri( GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    //     glTexParameteri( GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+        
+    //     glBindTexture( GL_TEXTURE_EXTERNAL_OES, 0 );
+    // }
+
+    return glTexture;
+}
 
 /* Must use parameters here or else there will be an undefined reference to SDL_main */
 int main(int argc, char** argv)
