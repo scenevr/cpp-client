@@ -2,8 +2,6 @@
 
 namespace scenevr {
 
-#include <SDL.h>
-
 Stylemap::Stylemap(const string css) : cssText(css) {
   tokenize();
 }
@@ -28,7 +26,6 @@ void Stylemap::tokenize() {
     string value;
     parsing = std::getline(ss, value, ';');
 
-    SDL_Log("key: %s value %s", key.c_str(), value.c_str());
     rules[key] = value;
   }
 }

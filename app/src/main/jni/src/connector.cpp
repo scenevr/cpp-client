@@ -44,6 +44,9 @@ void Connector::handleMessage(const std::string & message) {
         element = Billboard::create(node);
       } else if (strcmp(node.name(), "skybox") == 0) {
         element = Skybox::create(node);
+      } else if (strcmp(node.name(), "player") == 0) {
+        // todo
+        continue;
       } else {
         SDL_Log("Unhandled element <%s/>", node.name());
         continue;
