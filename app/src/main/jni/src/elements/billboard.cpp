@@ -1,4 +1,4 @@
-#include "box.h"
+#include "billboard.h"
 
 #include <three/objects/mesh.h>
 #include <three/extras/geometries/box_geometry.h>
@@ -8,11 +8,11 @@ namespace scenevr {
 
 using namespace three;
 
-Box::Box(const pugi::xml_node n) : Element(n){
+Billboard::Billboard(const pugi::xml_node n) : Element(n){
 
   auto material = three::MeshLambertMaterial::create(
     three::Material::Parameters()
-      .add( "color", three::Color(styles->getPropertyValue("color")) )
+      .add( "color", three::Color(0xFFFFFF) )
   );
 
   auto geometry = BoxGeometry::create(1, 1, 1);
@@ -20,7 +20,7 @@ Box::Box(const pugi::xml_node n) : Element(n){
 
   // Set position
   object->position().copy(parseVector(node.attribute("position").value()));
-  object->scale().copy(parseVector(node.attribute("scale").value(), Vector3(1, 1, 1)));
+  object->scale().copy(parseVector(node.attribute("scale").value(), Vector3(2, 2, 0.2)));
 }
 
 }

@@ -1,4 +1,6 @@
 #include "connector.h"
+
+#include "elements/billboard.h"
 #include "elements/box.h"
 #include "elements/skybox.h"
 
@@ -39,7 +41,7 @@ void Connector::handleMessage(const std::string & message) {
       if (strcmp(node.name(), "box") == 0) {
         element = Box::create(node);
       } else if (strcmp(node.name(), "billboard") == 0) {
-        element = Box::create(node);
+        element = Billboard::create(node);
       } else if (strcmp(node.name(), "skybox") == 0) {
         element = Skybox::create(node);
       } else {
