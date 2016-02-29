@@ -31,9 +31,24 @@ void Client::start (){
 
   const auto WALKING_SPEED = 4.0;
 
+  window->addEventListener(SDL_JOYAXISMOTION, [&]( const SDL_Event& event ) {
+    if (event.jaxis.axis == 0){
+      motion.x = event.jaxis.value * 4.0 / 32768.0;
+    }
+    if (event.jaxis.axis == 1){
+      motion.z = event.jaxis.value * 4.0 / 32768.0;
+    }
+  });
+
   window->addEventListener(SDL_JOYBUTTONDOWN, [&]( const SDL_Event& event ) {
     if (event.jbutton.button == SDL_CONTROLLER_BUTTON_A) {
       motion.z = -WALKING_SPEED;
+    }
+  });
+
+  window->addEventListener(SDL_JOYBUTTONUP, [&]( const SDL_Event& event ) {
+    if (event.jbutton.button == SDL_CONTROLLER_BUTTON_A) {
+      motion.z = 0;
     }
   });
 
@@ -51,6 +66,8 @@ void Client::start (){
 }
 
 bool Client::tick(float dt) {
+  stats.update(dt);
+
   Vector3 v(motion);
   v.multiplyScalar(dt);
   camera->position().add(v);

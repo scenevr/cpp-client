@@ -13,6 +13,7 @@
 
 #include "connector.h"
 #include "vendor/sdl.h"
+#include "vendor/stats.h"
 
 namespace scenevr {
 
@@ -31,6 +32,7 @@ class Client : public three::NonCopyable {
 
     Connector::Ptr connector;
 
+    Stats stats;
     three::Vector3 motion;
     three::GLRenderer::Ptr renderer;
     three::GLWindow* window;

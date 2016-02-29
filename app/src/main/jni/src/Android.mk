@@ -24,7 +24,8 @@ LOCAL_SRC_FILES := \
 	$(PUGI_PATH)/pugixml.cpp \
 	$(wildcard $(LOCAL_PATH)/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/elements/*.cpp) \
-	vendor/sdl.cpp
+	vendor/sdl.cpp \
+	vendor/stats.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 THREE
 
