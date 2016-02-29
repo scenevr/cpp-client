@@ -22,12 +22,8 @@ LOCAL_SRC_FILES := \
 	$(SDL_PATH)/src/main/android/SDL_android_main.c \
 	$(EASYWS_PATH)/easywsclient.cpp \
 	$(PUGI_PATH)/pugixml.cpp \
-	main.cpp \
-	client.cpp \
-	connector.cpp \
-	elements/element.cpp \
-	elements/stylemap.cpp \
-	elements/box.cpp \
+	$(wildcard $(LOCAL_PATH)/*.cpp) \
+	$(wildcard $(LOCAL_PATH)/elements/*.cpp) \
 	vendor/sdl.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 THREE

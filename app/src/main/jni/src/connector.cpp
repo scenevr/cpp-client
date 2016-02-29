@@ -1,5 +1,6 @@
 #include "connector.h"
 #include "elements/box.h"
+#include "elements/skybox.h"
 
 #include <thread>
 
@@ -39,6 +40,8 @@ void Connector::handleMessage(const std::string & message) {
         element = Box::create(node);
       } else if (strcmp(node.name(), "billboard") == 0) {
         element = Box::create(node);
+      } else if (strcmp(node.name(), "skybox") == 0) {
+        element = Skybox::create(node);
       } else {
         SDL_Log("Unhandled element <%s/>", node.name());
         continue;
