@@ -6,7 +6,7 @@ namespace scenevr {
 
 class Stats {
   public:
-    Stats(float reportInterval = 1.f);
+    Stats(float reportInterval = 2.5f);
     void update(float deltaTime);
   private:
     int framesSinceReport, fps;
